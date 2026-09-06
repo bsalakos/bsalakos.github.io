@@ -9,6 +9,7 @@ layout: null
   <title>Blog — Βασίλειος Σαλάκος</title>
   <style>
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
       min-height: 100vh;
@@ -156,7 +157,7 @@ layout: null
       padding: 0;
       margin: 0;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
       gap: 0.6rem;
     }
     .archive-content a {
@@ -194,10 +195,10 @@ layout: null
       </div>
     </header>
 
-    <!-- Posts Feed (ΑΥΤΟΜΑΤΟ) -->
+    <!-- Posts Feed -->
     <main class="post-list">
       {% for post in site.posts %}
-        <a class="post-card" href="{{ post.url }}">
+        <a class="post-card" id="archive-{{ post.date | date: '%m-%Y' }}" href="{{ post.url }}">
           <span class="post-meta">{{ post.date | date: "%d/%m/%Y" }}</span>
           <h2>{{ post.title }}</h2>
           <p class="post-summary">{{ post.excerpt | strip_html }}</p>
@@ -205,7 +206,7 @@ layout: null
       {% endfor %}
     </main>
 
-    <!-- Archive Dropdown Bar (ΑΥΤΟΜΑΤΟ) -->
+    <!-- Archive Dropdown Bar -->
     <details class="archive-bar">
       <summary>
         <span>Αρχειοθήκη</span>
@@ -220,9 +221,32 @@ layout: null
       </summary>
       <div class="archive-content">
         <ul>
-          {% assign postsByYear = site.posts | group_by_exp: "post", "post.date | date: '%Y'" %}
-          {% for year in postsByYear %}
-            <li><a href="#year-{{ year.name }}">{{ year.name }} ({{ year.items.size }})</a></li>
+          {% assign postsByMonth = site.posts | group_by_exp: "post", "post.date | date: '%m-%Y'" %}
+          {% for group in postsByMonth %}
+            {% assign first_post = group.items.first %}
+            {% assign month_num = first_post.date | date: "%m" %}
+            {% assign year_num = first_post.date | date: "%Y" %}
+            
+            {% case month_num %}
+              {% when "01" %}{% assign month_name = "Ιανουάριος" %}
+              {% when "02" %}{% assign month_name = "Φεβρουάριος" %}
+              {% when "03" %}{% assign month_name = "Μάρτιος" %}
+              {% when "04" %}{% assign month_name = "Απρίλιος" %}
+              {% when "05" %}{% assign month_name = "Μάιος" %}
+              {% when "06" %}{% assign month_name = "Ιούνιος" %}
+              {% when "07" %}{% assign month_name = "Ιούλιος" %}
+              {% when "08" %}{% assign month_name = "Αύγουστος" %}
+              {% when "09" %}{% assign month_name = "Σεπτέμβριος" %}
+              {% when "10" %}{% assign month_name = "Οκτώβριος" %}
+              {% when "11" %}{% assign month_name = "Νοέμβριος" %}
+              {% when "12" %}{% assign month_name = "Δεκέμβριος" %}
+            {% endcase %}
+
+            <li>
+              <a href="#archive-{{ group.name }}">
+                {{ month_name }} {{ year_num }} ({{ group.items.size }})
+              </a>
+            </li>
           {% endfor %}
         </ul>
       </div>
