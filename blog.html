@@ -9,7 +9,6 @@ layout: null
   <title>Blog — Βασίλειος Σαλάκος</title>
   <style>
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
     body {
       margin: 0;
       min-height: 100vh;
@@ -71,6 +70,31 @@ layout: null
       stroke-width: 1.8;
       stroke-linecap: round;
       stroke-linejoin: round;
+    }
+
+    /* Active Filter Notice */
+    .filter-status {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+    .clear-filter-btn {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #e8e8f0;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: background 0.2s;
+    }
+    .clear-filter-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
     }
 
     /* Posts List */
@@ -160,14 +184,18 @@ layout: null
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
       gap: 0.6rem;
     }
-    .archive-content a {
+    .archive-content button {
+      background: transparent;
+      border: none;
       color: #e8e8f0;
-      text-decoration: none;
       font-size: 0.88rem;
       opacity: 0.75;
+      text-align: left;
+      padding: 0;
+      cursor: pointer;
       transition: opacity 0.2s ease;
     }
-    .archive-content a:hover {
+    .archive-content button:hover {
       opacity: 1;
     }
 
@@ -195,10 +223,16 @@ layout: null
       </div>
     </header>
 
+    <!-- Filter Notification Bar -->
+    <div class="filter-status" id="filter-status">
+      <span>Προβολή: <strong id="filter-name"></strong></span>
+      <button class="clear-filter-btn" onclick="clearFilter()">Εμφάνιση όλων</button>
+    </div>
+
     <!-- Posts Feed -->
-    <main class="post-list">
+    <main class="post-list" id="post-list">
       {% for post in site.posts %}
-        <a class="post-card" id="archive-{{ post.date | date: '%m-%Y' }}" href="{{ post.url }}">
+        <a class="post-card" data-month="{{ post.date | date: '%m-%Y' }}" data-year="{{ post.date | date: '%Y' }}" href="{{ post.url }}">
           <span class="post-meta">{{ post.date | date: "%d/%m/%Y" }}</span>
           <h2>{{ post.title }}</h2>
           <p class="post-summary">{{ post.excerpt | strip_html }}</p>
@@ -207,7 +241,7 @@ layout: null
     </main>
 
     <!-- Archive Dropdown Bar -->
-    <details class="archive-bar">
+    <details class="archive-bar" id="archive-details">
       <summary>
         <span>Αρχειοθήκη</span>
         <div class="summary-right">
@@ -221,6 +255,9 @@ layout: null
       </summary>
       <div class="archive-content">
         <ul>
+          <li>
+            <button onclick="clearFilter()"><strong>Όλα τα άρθρα ({{ site.posts.size }})</strong></button>
+          </li>
           {% assign postsByMonth = site.posts | group_by_exp: "post", "post.date | date: '%m-%Y'" %}
           {% for group in postsByMonth %}
             {% assign first_post = group.items.first %}
@@ -243,9 +280,9 @@ layout: null
             {% endcase %}
 
             <li>
-              <a href="#archive-{{ group.name }}">
+              <button onclick="filterMonth('{{ group.name }}', '{{ month_name }} {{ year_num }}')">
                 {{ month_name }} {{ year_num }} ({{ group.items.size }})
-              </a>
+              </button>
             </li>
           {% endfor %}
         </ul>
@@ -253,6 +290,33 @@ layout: null
     </details>
 
   </div>
+
+  <script>
+    function filterMonth(monthKey, label) {
+      const posts = document.querySelectorAll('.post-card');
+      posts.forEach(post => {
+        if (post.getAttribute('data-month') === monthKey) {
+          post.style.display = 'flex';
+        } else {
+          post.style.display = 'none';
+        }
+      });
+
+      document.getElementById('filter-name').innerText = label;
+      document.getElementById('filter-status').style.display = 'flex';
+      document.getElementById('archive-details').removeAttribute('open');
+    }
+
+    function clearFilter() {
+      const posts = document.querySelectorAll('.post-card');
+      posts.forEach(post => {
+        post.style.display = 'flex';
+      });
+
+      document.getElementById('filter-status').style.display = 'none';
+      document.getElementById('archive-details').removeAttribute('open');
+    }
+  </script>
 
 </body>
 </html>
