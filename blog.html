@@ -258,32 +258,45 @@ layout: null
           <li>
             <button onclick="clearFilter()"><strong>Όλα τα άρθρα ({{ site.posts.size }})</strong></button>
           </li>
-          {% assign postsByMonth = site.posts | group_by_exp: "post", "post.date | date: '%m-%Y'" %}
-          {% for group in postsByMonth %}
-            {% assign first_post = group.items.first %}
-            {% assign month_num = first_post.date | date: "%m" %}
-            {% assign year_num = first_post.date | date: "%Y" %}
-            
-            {% case month_num %}
-              {% when "01" %}{% assign month_name = "Ιανουάριος" %}
-              {% when "02" %}{% assign month_name = "Φεβρουάριος" %}
-              {% when "03" %}{% assign month_name = "Μάρτιος" %}
-              {% when "04" %}{% assign month_name = "Απρίλιος" %}
-              {% when "05" %}{% assign month_name = "Μάιος" %}
-              {% when "06" %}{% assign month_name = "Ιούνιος" %}
-              {% when "07" %}{% assign month_name = "Ιούλιος" %}
-              {% when "08" %}{% assign month_name = "Αύγουστος" %}
-              {% when "09" %}{% assign month_name = "Σεπτέμβριος" %}
-              {% when "10" %}{% assign month_name = "Οκτώβριος" %}
-              {% when "11" %}{% assign month_name = "Νοέμβριος" %}
-              {% when "12" %}{% assign month_name = "Δεκέμβριος" %}
-            {% endcase %}
 
-            <li>
-              <button onclick="filterMonth('{{ group.name }}', '{{ month_name }} {{ year_num }}')">
-                {{ month_name }} {{ year_num }} ({{ group.items.size }})
-              </button>
-            </li>
+          {% assign current_year = "now" | date: "%Y" %}
+          {% assign postsByYear = site.posts | group_by_exp: "post", "post.date | date: '%Y'" %}
+
+          {% for yearGroup in postsByYear %}
+            {% if yearGroup.name == current_year %}
+              {% assign postsByMonth = yearGroup.items | group_by_exp: "post", "post.date | date: '%m-%Y'" %}
+              {% for monthGroup in postsByMonth %}
+                {% assign first_post = monthGroup.items.first %}
+                {% assign month_num = first_post.date | date: "%m" %}
+                
+                {% case month_num %}
+                  {% when "01" %}{% assign month_name = "Ιανουάριος" %}
+                  {% when "02" %}{% assign month_name = "Φεβρουάριος" %}
+                  {% when "03" %}{% assign month_name = "Μάρτιος" %}
+                  {% when "04" %}{% assign month_name = "Απρίλιος" %}
+                  {% when "05" %}{% assign month_name = "Μάιος" %}
+                  {% when "06" %}{% assign month_name = "Ιούνιος" %}
+                  {% when "07" %}{% assign month_name = "Ιούλιος" %}
+                  {% when "08" %}{% assign month_name = "Αύγουστος" %}
+                  {% when "09" %}{% assign month_name = "Σεπτέμβριος" %}
+                  {% when "10" %}{% assign month_name = "Οκτώβριος" %}
+                  {% when "11" %}{% assign month_name = "Νοέμβριος" %}
+                  {% when "12" %}{% assign month_name = "Δεκέμβριος" %}
+                {% endcase %}
+
+                <li>
+                  <button onclick="filterPosts('month', '{{ monthGroup.name }}', '{{ month_name }} {{ current_year }}')">
+                    {{ month_name }} {{ current_year }} ({{ monthGroup.items.size }})
+                  </button>
+                </li>
+              {% endfor %}
+            {% else %}
+              <li>
+                <button onclick="filterPosts('year', '{{ yearGroup.name }}', 'Έτος {{ yearGroup.name }}')">
+                  <strong>{{ yearGroup.name }} ({{ yearGroup.items.size }})</strong>
+                </button>
+              </li>
+            {% endif %}
           {% endfor %}
         </ul>
       </div>
@@ -292,10 +305,11 @@ layout: null
   </div>
 
   <script>
-    function filterMonth(monthKey, label) {
+    function filterPosts(type, key, label) {
       const posts = document.querySelectorAll('.post-card');
       posts.forEach(post => {
-        if (post.getAttribute('data-month') === monthKey) {
+        const attr = type === 'month' ? 'data-month' : 'data-year';
+        if (post.getAttribute(attr) === key) {
           post.style.display = 'flex';
         } else {
           post.style.display = 'none';
