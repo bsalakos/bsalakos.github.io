@@ -6,6 +6,7 @@ layout: null
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Μουσική — Βασίλειος Σαλάκος</title>
   <style>
     * { box-sizing: border-box; }
@@ -120,7 +121,7 @@ layout: null
       transform: translateX(-3px);
     }
 
-    /* Custom Audio Player Card */
+    /* Player Card */
     .player-card {
       background: #ffffff14;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
@@ -128,105 +129,27 @@ layout: null
       padding: 1.2rem 1.4rem;
       display: flex;
       flex-direction: column;
-      gap: 0.8rem;
+      gap: 1rem;
       border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    .player-info {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    /* Responsive Iframe Container (Visible) */
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+      height: 0;
+      overflow: hidden;
+      border-radius: 8px;
+      background: #000;
     }
 
-    .track-details {
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-    }
-
-    .track-title {
-      font-size: 0.98rem;
-      font-weight: 500;
-      color: #ffffff;
-    }
-
-    .track-artist {
-      font-size: 0.82rem;
-      opacity: 0.65;
-    }
-
-    .player-controls {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .play-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      flex-shrink: 0;
-    }
-
-    .play-btn:hover {
-      background: rgba(255, 255, 255, 0.28);
-      transform: scale(1.05);
-    }
-
-    .play-btn svg {
-      width: 18px;
-      height: 18px;
-      fill: currentColor;
-    }
-
-    .progress-bar-container {
-      flex-grow: 1;
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-    }
-
-    .progress-bar {
-      width: 100%;
-      height: 5px;
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 3px;
-      appearance: none;
-      outline: none;
-      cursor: pointer;
-    }
-
-    .progress-bar::-webkit-slider-thumb {
-      appearance: none;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: #ffffff;
-      cursor: pointer;
-    }
-
-    .time-stamp {
-      font-size: 0.78rem;
-      font-family: monospace;
-      opacity: 0.6;
-      min-width: 35px;
-    }
-
-    /* Κρυφό container για το YouTube iframe */
-    #yt-hidden-player {
+    .video-wrapper iframe {
       position: absolute;
-      width: 1px;
-      height: 1px;
-      opacity: 0;
-      pointer-events: none;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
     }
   </style>
 </head>
@@ -255,116 +178,20 @@ layout: null
       </div>
     </header>
 
-    <!-- Custom Audio Player Card -->
+    <!-- Player Card -->
     <div class="player-card">
-      <div class="player-info">
-        <div class="track-details">
-          <span class="track-title" id="trackTitle">Φόρτωση YouTube Track...</span>
-          <span class="track-artist">YouTube Audio Stream</span>
-        </div>
-      </div>
-      <div class="player-controls">
-        <button class="play-btn" id="playBtn" title="Play/Pause">
-          <svg id="playIcon" viewBox="0 0 24 24">
-            <polygon points="5 3 19 12 5 21 5 3"></polygon>
-          </svg>
-        </button>
-        <div class="progress-bar-container">
-          <input type="range" class="progress-bar" id="progressBar" value="0" min="0" max="100">
-          <span class="time-stamp" id="timeStamp">0:00</span>
-        </div>
+      <div class="video-wrapper">
+        <iframe 
+          src="https://www.youtube-nocookie.com/embed/jfKfPfyJRdk?referrerpolicy=strict-origin-when-cross-origin" 
+          title="YouTube Music Player" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen>
+        </iframe>
       </div>
     </div>
 
-    <!-- Hidden Container -->
-    <div id="yt-hidden-player"></div>
-
   </div>
-
-  <script>
-    let player;
-    let updateInterval;
-
-    // 1. Φόρτωση API ασύγχρονα
-    const tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    const firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-    // 2. Αρχικοποίηση YouTube Player
-    function onYouTubeIframeAPIReady() {
-      player = new YT.Player('yt-hidden-player', {
-        height: '1',
-        width: '1',
-        videoId: 'jfKfPfyJRdk', // <-- Αλλάζεις μόνο το ID εδώ!
-        playerVars: {
-          'playsinline': 1
-        },
-        events: {
-          'onReady': onPlayerReady,
-          'onStateChange': onPlayerStateChange
-        }
-      });
-    }
-
-    const playBtn = document.getElementById('playBtn');
-    const playIcon = document.getElementById('playIcon');
-    const progressBar = document.getElementById('progressBar');
-    const timeStamp = document.getElementById('timeStamp');
-    const trackTitle = document.getElementById('trackTitle');
-
-    function onPlayerReady(event) {
-      if (player.getVideoData().title) {
-        trackTitle.textContent = player.getVideoData().title;
-      } else {
-        trackTitle.textContent = "Lofi Hip Hop Track";
-      }
-    }
-
-    function onPlayerStateChange(event) {
-      if (event.data === YT.PlayerState.PLAYING) {
-        playIcon.innerHTML = '<rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect>';
-        startTimer();
-      } else {
-        playIcon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
-        clearInterval(updateInterval);
-      }
-    }
-
-    playBtn.addEventListener('click', () => {
-      if (!player || !player.getPlayerState) return;
-      const state = player.getPlayerState();
-      if (state === YT.PlayerState.PLAYING) {
-        player.pauseVideo();
-      } else {
-        player.playVideo();
-      }
-    });
-
-    function startTimer() {
-      clearInterval(updateInterval);
-      updateInterval = setInterval(() => {
-        if (player && player.getCurrentTime) {
-          const currentTime = player.getCurrentTime();
-          const duration = player.getDuration();
-          if (duration > 0) {
-            progressBar.value = (currentTime / duration) * 100;
-            const mins = Math.floor(currentTime / 60);
-            const secs = Math.floor(currentTime % 60).toString().padStart(2, '0');
-            timeStamp.textContent = `${mins}:${secs}`;
-          }
-        }
-      }, 500);
-    }
-
-    progressBar.addEventListener('input', () => {
-      if (player && player.getDuration) {
-        const duration = player.getDuration();
-        const seekToTime = (progressBar.value / 100) * duration;
-        player.seekTo(seekToTime, true);
-      }
-    });
-  </script>
 
 </body>
 </html>
