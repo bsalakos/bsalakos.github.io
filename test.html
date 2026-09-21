@@ -6,7 +6,6 @@ layout: null
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Μουσική — Βασίλειος Σαλάκος</title>
   <style>
     * { box-sizing: border-box; }
@@ -121,34 +120,19 @@ layout: null
       transform: translateX(-3px);
     }
 
-    /* Player Card */
-    .player-card {
+    /* Spotify Player Container */
+    .spotify-card {
       background: #ffffff14;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
-      border-radius: 12px;
-      padding: 1.2rem 1.4rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
+      border-radius: 16px;
+      padding: 0.8rem;
       border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    /* Responsive Iframe Container (Visible) */
-    .video-wrapper {
-      position: relative;
-      padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-      height: 0;
-      overflow: hidden;
-      border-radius: 8px;
-      background: #000;
-    }
-
-    .video-wrapper iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
+    .spotify-card iframe {
+      border-radius: 12px;
       width: 100%;
-      height: 100%;
+      height: 152px;
       border: 0;
     }
   </style>
@@ -156,42 +140,7 @@ layout: null
 <body>
 
   <div class="music-container">
-
-    <!-- Header Navigation -->
-    <header class="music-header">
-      <div class="music-title">
-        <svg class="title-icon" viewBox="0 0 24 24">
-          <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
-          <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"></path>
-          <path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0-2-2H3z"></path>
-        </svg>
-        <h1>Μουσική</h1>
-      </div>
-
-      <div class="nav-dropdown-wrapper">
-        <a class="home-link" href="index.html">
-          <svg viewBox="0 0 24 24">
-            <path d="M19 12H5M12 19l-7-7 7-7"/>
-          </svg>
-          <span>Αρχική</span>
-        </a>
-      </div>
-    </header>
-
-    <!-- Player Card -->
-    <div class="player-card">
-      <div class="video-wrapper">
-        <iframe 
-          src="https://www.youtube-nocookie.com/embed/jfKfPfyJRdk?referrerpolicy=strict-origin-when-cross-origin" 
-          title="YouTube Music Player" 
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen>
-        </iframe>
-      </div>
-    </div>
-
-  </div>
-
+<iframe width="560" height="315" src="https://www.youtube.com/embed/YvZHfD_uzCg?si=d5Cheu2BiDdhXsaM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 </body>
 </html>
