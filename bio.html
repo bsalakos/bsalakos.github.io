@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+<script>
+  // Άμεσος έλεγχος πριν ζωγραφιστεί η σελίδα
+  if (localStorage.getItem('theme') === 'light') {
+    document.documentElement.classList.add('light-theme');
+  }
+</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Βιογραφικό — Βασίλειος Σαλάκος</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      --bg-color: linear-gradient(135deg, #1e1e2f, #3f3f5f);
+
+      --text-color: #e8e8f0;
+      --text-muted: rgba(232, 232, 240, 0.6);
+      --text-sub: rgba(232, 232, 240, 0.85);
+      --title-color: #ffffff;
+      
+      --card-bg: rgba(255, 255, 255, 0.078);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --card-border-hover: rgba(255, 255, 255, 0.25);
+      --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+      --divider-color: rgba(255, 255, 255, 0.1);
+      
+      --icon-color: #e8e8f0;
+      --hover-bg: rgba(255, 255, 255, 0.12);
+      --menu-bg: rgba(30, 30, 47, 0.95);
+      --modal-border: rgba(255, 255, 255, 0.2);
+
+      --theme-border: trasparent;
+      --header-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    }    
+
+    /* Light Theme Palette Definition */
+    body.light-theme {
+      --bg-color: radial-gradient(circle at 50% 45%, rgba(255,255,255,.8) 0%, transparent 38%), 
+                  radial-gradient(circle at 85% 15%, rgba(190,190,235,.22), transparent 35%), 
+                  linear-gradient(135deg, #edf2f8 0%, #dce5f0 55%, #d8dced 100%);
+      --text-color: rgba(43, 78, 116, 0.95); /* ΑΛΛΑΞΕ */
+      --text-muted: rgba(42, 64, 89, 0.65); /* ΑΛΛΑΞΕ */
+      --text-sub: rgba(43, 78, 116, 0.85);
+      --title-color: rgba(25, 50, 77, 0.75);  /* ΑΛΛΑΞΕ */
+      
+      --card-bg: rgba(43, 78, 116, 0.051);
+      --card-border: rgba(43, 78, 116, 0.169);
+      --card-border-hover: rgba(43, 78, 116, 0.169);
+      --card-shadow: 0 4px 12px rgba(43, 78, 116, 0.180);
+      --divider-color: rgba(43, 78, 116, 0.15);
+      
+      --icon-color: rgba(43, 78, 116, 0.878);
+      --hover-bg: rgba(43, 78, 116, 0.12);
+      --menu-bg: rgba(255, 255, 255, 0.15);
+      --modal-border: rgba(43, 78, 116, 0.25);
+
+      --theme-border: rgba(43, 78, 116, 0.169);
+      --header-shadow: 0 2px 5px rgba(43, 78, 116, 0.180);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: var(--bg-color);
+      background-attachment: fixed;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text-color);
+      padding: 3rem 1rem;
+    }
+
+    .page-container {
+      width: 100%;
+      max-width: 680px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Top Navigation Header — Τίτλος αριστερά, Πλοήγηση δεξιά */
+    .page-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 1.2rem;
+    }
+
+    /* Title Badge Style (Αριστερά) */
+    .page-title {
+      height: 38px;
+      padding: 0 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      box-shadow: var(--header-shadow);
+      margin-bottom: -0.2rem;
+    }
+
+    .page-title h1 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 500;
+      line-height: 1;
+      color: var(--text-color);
+    }
+
+    .page-title .title-icon {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: var(--icon-color);
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      display: block;
+      flex-shrink: 0;
+    }
+
+    /* Navigation Dropdown Wrapper (Δεξιά) */
+    .nav-dropdown-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      position: relative;
+      margin-bottom: -0.2rem;
+    }
+
+    /* Dropdown Trigger */
+    .nav-dropdown {
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .home-link, .theme-toggle-btn, .dropdown-trigger {
+      height: 38px;
+      padding: 0 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-color);
+      cursor: pointer;
+      opacity: 0.9;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      list-style: none;
+      box-shadow: var(--header-shadow);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .dropdown-trigger::-webkit-details-marker {
+      display: none;
+    }
+
+    .home-link:hover, .theme-toggle-btn:hover, .dropdown-trigger:hover,
+    .nav-dropdown[open] .dropdown-trigger {
+      opacity: 1;
+      color: var(--title-color);
+      background: var(--hover-bg);
+      border-color: var(--card-border-hover);
+      box-shadow: var(--card-shadow);
+    }
+
+    .home-link svg, .theme-toggle-btn svg, .hamburger-icon {
+      display: block;
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      will-change: transform;
+      transform: translateZ(0);
+    }
+
+    .nav-dropdown[open] .hamburger-icon {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      right: 0;
+      left: auto;
+      min-width: 150px;
+      background: var(--menu-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 0.4rem;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: 0.88rem;
+      padding: 0.45rem 0.6rem;
+      border-radius: 6px;
+      opacity: 0.85;
+      transition: background 0.2s ease, opacity 0.2s ease;
+    }
+
+    .menu-item svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .menu-item:hover {
+      background: var(--hover-bg);
+    }
+
+    /* Top Grid Section */
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 1.2rem;
+      align-items: stretch;
+    }
+
+    .photo-card {
+      background: var(--card-bg);
+      border: 1px solid var(--theme-border);
+      box-shadow: var(--card-shadow);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      cursor: pointer;
+      min-height: 180px;
+    }
+
+    .photo-wrapper {
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .photo-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 46% 15%;
+      transform: scale(1.05) rotate(0deg);
+      display: block;
+    }
+
+    .details-card {
+      background: var(--card-bg);
+      box-shadow: var(--card-shadow);
+      border: 1px solid var(--theme-border);
+      border-radius: 12px;
+      padding: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .details-card h2 {
+      margin: 0 0 0.8rem 0;
+      font-size: 1.15rem;
+      font-weight: 500;
+      border-bottom: 1px solid var(--divider-color);
+      padding-bottom: 0.5rem;
+    }
+    .info-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1rem 0;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+    .info-list li span {
+      color: var(--text-muted);
+    }
+
+    /* Social Icons Row */
+    .social-row {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      padding-top: 0.8rem;
+      border-top: 1px solid var(--divider-color);
+    }
+    .social-row a {
+      color: var(--title-color);
+      opacity: 0.8;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      display: flex;
+      align-items: center;
+    }
+    .social-row a:hover {
+      opacity: 1;
+      transform: translateY(-2px);
+    }
+    .social-row svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Dropdown Accordions */
+    .page-dropdown {
+      background: var(--card-bg);
+      box-shadow: var(--card-shadow);
+      border-radius: 12px;
+      padding: 0.9rem 1.2rem;
+      border: 1px solid var(--theme-border);
+    }
+    .page-dropdown summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      opacity: 0.9;
+      user-select: none;
+      list-style: none;
+    }
+    .page-dropdown summary::-webkit-details-marker {
+      display: none;
+    }
+    
+    .toggle-icon {
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease;
+      opacity: 0.85;
+      will-change: transform;
+    }
+    .page-dropdown[open] .toggle-icon {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-content {
+      margin-top: 1rem;
+      padding-top: 0.8rem;
+      border-top: 1px solid var(--divider-color);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      opacity: 0.88;
+    }
+
+    /* Original Timeline Item Design */
+    .timeline-item {
+      margin-bottom: 1.8rem;
+    }
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+    .timeline-date {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      display: block;
+    }
+    .timeline-title {
+      font-weight: 500;
+      color: var(--title-color);
+      margin: 0.0rem 0 0.3rem 0;
+    }
+    .timeline-desc {
+      margin: 0;
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
+
+    /* Clean Bullets Style */
+    .timeline-bullets {
+      margin: 0.7rem 0 0 0;
+      padding-left: 1.2rem;
+      font-size: 0.85rem;
+      line-height: 1.7;
+      opacity: 0.85;
+    }
+    .timeline-bullets li {
+      margin-bottom: 0.7rem;
+    }
+    .timeline-bullets li:last-child {
+      margin-bottom: 0;
+    }
+
+    @media (max-width: 560px) {
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Modal Overlay */
+    .image-modal {
+      display: flex;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(5px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      cursor: zoom-out;
+    }
+
+    .image-modal img {
+      max-width: 60vw;
+      max-height: 60vh;
+      width: auto;
+      height: auto;
+      border-radius: 0px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      border: 10px solid var(--modal-border);
+      object-fit: contain;
+      cursor: zoom-out;
+      transform: scale(0.95);
+      transition: transform 0.3s ease;
+    }
+
+    .image-modal.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .image-modal.active img {
+      transform: scale(1);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-container">
+
+    <!-- Header Navigation -->
+    <header class="page-header">
+      <!-- Τίτλος Αριστερά -->
+      <div class="page-title">
+        <svg class="title-icon" viewBox="0 0 24 24">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <polyline points="10 9 9 9 8 9"/>
+        </svg>
+        <h1>Βιογραφικό</h1>
+      </div>
+
+      <!-- Κουμπιά Πλοήγησης Δεξιά -->
+      <div class="nav-dropdown-wrapper">
+        <!-- Κουμπί Εναλλαγής Θέματος (Light/Dark) -->
+        <button class="theme-toggle-btn" id="themeToggle" title="Εναλλαγή Θέματος">
+        <svg id="themeIcon" viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        </button>
+        <a class="home-link" href="index.html">
+        <svg viewBox="0 0 24 24">
+            <path d="M3 10L12 3l9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V10z M9.5 21v-6a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v6" />
+        </svg>
+        </a>
+        <details class="nav-dropdown">
+          <summary class="dropdown-trigger" title="Μενού Πλοήγησης">
+            <svg class="hamburger-icon" viewBox="0 0 24 24">
+                <line x1="4" y1="6" x2="20" y2="6"></line>
+                <line x1="4" y1="12" x2="20" y2="12"></line>
+                <line x1="4" y1="18" x2="20" y2="18"></line>
+            </svg>
+          </summary>
+          <div class="dropdown-menu">
+            <a href="about.html" class="menu-item">
+              <svg viewBox="0 0 24 24">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <span>About</span>
+            </a>
+            <a href="projects.html" class="menu-item">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 20h9"/>
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+              </svg>
+              <span>Projects</span>
+            </a>
+            <a href="hobbies.html" class="menu-item">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 21a9 9 0 1 1 0-18c4.97 0 9 3.58 9 8 0 2.5-2 4.5-4.5 4.5h-1.3c-.7 0-1.2.6-1.2 1.3 0 .3.1.6.3.8.4.5.7 1.2.7 1.9 0 1.5-1.3 1.5-3 1.5z"></path>
+                <circle cx="7.5" cy="14.5" r="0.6" fill="currentColor"></circle>
+                <circle cx="7.5" cy="9.5" r="0.6" fill="currentColor"></circle>
+                <circle cx="12" cy="7" r="0.6" fill="currentColor"></circle>
+                <circle cx="16.5" cy="9.5" r="0.6" fill="currentColor"></circle>
+              </svg>
+              <span>Hobbies</span>
+            </a>
+            <a href="blog.html" class="menu-item">
+              <svg viewBox="0 0 24 24">
+                <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 2.5 0 3-2 5"/>
+                <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 2.5 0 3-2 5"/>
+              </svg>
+              <span>Blog</span>
+            </a>
+          </div>
+        </details>
+      </div>
+    </header>
+
+    <!-- Profile Section (2 Columns) -->
+    <section class="profile-grid">
+      <!-- Image Slot -->
+      <div class="photo-card">
+        <div class="photo-wrapper">
+          <img src="file:///home/vasilis/Downloads/Photos Of Me/Firefly.png" alt="Βασίλειος Σαλάκος" onerror="this.style.display='none'">
+        </div>
+      </div>
+
+      <!-- Personal Info Slot -->
+      <div class="details-card">
+        <div>
+          <h2>Προσωπικά στοιχεία</h2>
+          <ul class="info-list">
+            <li><span>Όνομα:</span> Βασίλειος Σαλάκος</li>
+            <li><span>Ημ. Γέννησης:</span> 08/01/1990</li>
+            <li><span>Τόπος:</span> Θεσσαλονίκη</li>
+            <li><span>Οικ. Κατάσταση:</span> Άγαμος</li>
+            <li><span>Στρατιωτικές Υποχρεώσεις:</span> Μη υπέχον υποχρεώσεις</li>
+            <li><span>Γλώσσες:</span> Αγγλικά (Πολύ καλή γνώση)</li>
+          </ul>
+        </div>
+
+        <!-- Social Line SVG Icons -->
+        <div class="social-row">
+          <!-- Gmail -->
+          <a href="mailto:bsalakos@gmail.com" title="Email">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </a>
+          <!-- YouTube -->
+          <a href="https://youtube.com" target="_blank" title="YouTube">
+            <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
+          </a>
+          <!-- Vimeo -->
+          <a href="https://vimeo.com/το-username-σου" target="_blank" rel="noopener" title="Vimeo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 7.5c-.1 1.8-1.5 4.3-4.1 7.5-2.7 3.3-5 5-6.9 5-1.2 0-2.2-.5-3-1.6-.8-1.2-1.5-3.5-2.2-6.8-.7-3.2-1.3-4.8-1.9-4.8-.2 0-.8.4-1.8 1.1L1 6.6C2.1 5.6 3.4 4.5 4.8 3.3 6.3 2 7.4 1.3 8.2 1.3c1.3 0 2.2.9 2.6 2.7.5 2.3.8 4.2.9 5.8.3 2.1.8 3.1 1.6 3.1.6 0 1.4-.6 2.4-1.8 1-1.2 1.5-2.2 1.6-3.1.1-1.3-.4-1.9-1.6-1.9-.6 0-1.2.1-1.8.4 1.2-3.9 3.4-5.8 6.7-5.7 2.4.1 3.5 1.6 3.4 4.7z" />
+            </svg>
+          </a>
+          <!-- GitHub -->
+          <a href="https://github.com/το-username-σου" target="_blank" rel="noopener" title="GitHub">
+            <svg viewBox="0 0 24 24">
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+            </svg>
+          </a>
+          <!-- LinkedIn -->
+          <a href="https://linkedin.com" target="_blank" title="LinkedIn">
+            <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dropdown 1: Εκπαιδευση -->
+    <details class="page-dropdown">
+      <summary>
+        <span>Εκπαίδευση</span>
+        <span class="toggle-icon">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </span>
+      </summary>
+      <div class="dropdown-content">
+        <div class="timeline-item">
+          <span class="timeline-date">2012</span>
+          <div class="timeline-title">ΙΕΚ Λαγκαδά</div>
+          <p class="timeline-desc">Απόφοιτος της Ειδικότητας: Τεχνικός Εφαρμογών Πληροφορικής με Πολυμέσα</p>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-date">2010</span>
+          <div class="timeline-title">2ο ΕΠΑΛ Ευόσμου</div>
+          <p class="timeline-desc">Πτυχίο Εφαρμογών και Δικτύων Η/Υ & Απολυτήριο Λυκείου</p>
+        </div>
+      </div>
+    </details>
+
+    <!-- Dropdown 2: Επαγγελματική Εμπειρία -->
+    <details class="page-dropdown">
+      <summary>
+        <span>Επαγγελματική Εμπειρία</span>
+        <span class="toggle-icon">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </span>
+      </summary>
+      <div class="dropdown-content">
+
+        <!-- Φωκίδης -->
+        <div class="timeline-item">
+          <span class="timeline-date">2026 – Σήμερα</span>
+          <div class="timeline-title">Φωκίδης Α.Ε.Β.Ε <br>Αποθηκάριος-Picker – Παράρτημα ΙΟΝ (Bespoke SGA Holdings)</div>
+          <ul class="timeline-bullets">
+            <li>Προετοιμασία παραγγελιών – Συλλογή και Συσκευασία (Picking & Packing): <br>Διεκπεραίωση ολοκληρωμένου κύκλου απαιτούμενων εργασιών για την εκτέλεση παραγγελιών προς αποστολή με σκοπό την τροφοδοσία δικτύου καταστημάτων λιανικής.</li>
+            <li>Χρήση WMS λογισμικού και RF Scanner: <br>Υλοποίηση των απαιτούμενων ενεργειών για την έκδοση αυτοκόλλητων σημάνσεων παραγγελιών (labels) και τη δημιουργία και ολοκλήρωση παραστατικών.</li>
+            <li>Εβδομαδιαίες Παραλαβές και Ανατροφοδοσία: <br>Συμμετοχή στη διαδικασία της εκφόρτωσης, της καταμέτρησης και καταχώρησης των παραληφθέντων εμπορευμάτων στο σύστημα καθώς και της ανατροφοδοσίας ραφιών και αποθήκευσης αποθεμάτων.</li>
+            <li>Διενέργεια μηνιαίων απογραφών: <br>Συμμετοχή στη διαδικασία της καταμέτρησης ολόκληρου του διαθέσιμου αποθέματος.</li>
+            <li>Χειρισμός εξοπλισμού αποθήκης: <br>Χρήση χειροκίνητου παλετοφόρου και ηλεκτρικού οδηγούμενου ανυψωτικού περονοφόρου με πλατφόρμα αναβάτη.</li>
+            <li>Υποστηρικτικές Εργασίες στην αποθήκη: <br>Προετοιμασία υλικών συσκευασίας, μέριμνα για τη διατήρηση της καθαριότητας και της εύρυθμης λειτουργίας του χώρου.</li>
+          </ul>
+        </div>
+
+        <!-- Μασούτης -->
+        <div class="timeline-item">
+          <span class="timeline-date">2026</span>
+          <div class="timeline-title">Διαμαντής Μασούτης Α.Ε. – GRAND Μασούτης Σταυρούπολης <br>Αποθηκάριος</div>
+          <ul class="timeline-bullets">
+            <li>Χειρισμός χειροκίνητου και ηλεκτροκίνητου παλετοφόρου για τη μεταφορά και στοίβαξη εμπορευμάτων, καθώς και την εκφόρτωση των φορτίων που απεστάλησαν από την Κεντρική Αποθήκη.</li>
+            <li>Διαχείριση παραλαβών καταστήματος – περιστασιακά, σε ρόλο αναπλήρωσης, κατά τις ημέρες ανάπαυσης ή άδειας του τακτικού, αρμόδιου, προσωπικού: Σκανάρισμα εμπορευμάτων εξωτερικών προμηθευτών ή (αντ’ αυτού) χειροκίνητη καταχώρηση τιμολογίων στο σύστημα, καθώς και χρήση ERP εταιρικού λογισμικού για την οριστικοποίηση των παραστατικών.</li>
+            <li>Ανεφοδιασμός καταστήματος: Έλεγχος ελλείψεων νερών και χαρτικών, ανεφοδιασμός ραφιών και στοίβαξη εμπορευμάτων σε ντάνες στον χώρο του καταστήματος.</li>
+            <li>Διαχείριση Αποθήκης: Τακτοποίηση αποθέματος σε ράφια και παλέτες, φροντίδα για την καθαριότητα, την ασφάλεια και την εύρυθμη λειτουργία του χώρου της αποθήκης.</li>
+            <li>Συνεργασία με άλλα τμήματα καταστήματος.</li>
+          </ul>
+        </div>
+
+        <!-- Σκλαβενίτης -->
+        <div class="timeline-item">
+          <span class="timeline-date">2025 – 2026</span>
+          <div class="timeline-title">Σκλαβενίτης Α.Ε.Ε. – Εξάμηνη Σύμβαση (Μερική Απασχόληση) <br>Αποθηκάριος – Τμήμα ανεφοδιασμού / αποθήκης</div>
+          <ul class="timeline-bullets">
+            <li>Χειρισμός χειροκίνητου και ηλεκτροκίνητου παλετοφόρου για τη μεταφορά και τακτοποίηση εμπορευμάτων.</li>
+            <li>RF Scanner: Έκδοση παραστατικών / σκανάρισμα των παραληφθέντων εμπορευμάτων από το εταιρικό κέντρο διανομής.</li>
+            <li>Ανεφοδιασμός ραφιών καταστήματος και διαχείριση/τακτοποίηση αποθέματος (στοκ) στην αποθήκη.</li>
+            <li>Υποστήριξη πωλήσεων και εξυπηρέτηση πελατών.</li>
+            <li>Συνεργασία με άλλα τμήματα καταστήματος.</li>
+          </ul>
+        </div>
+
+        <!-- ΕΝΩ -->
+        <div class="timeline-item">
+          <span class="timeline-date">2023 – 2024</span>
+          <div class="timeline-title">Πολυχώρος «ΕΝΩ» – Τομέας Καθαριότητας (Μερική Απασχόληση)</div>
+          <ul class="timeline-bullets">
+            <li>Φροντίδα και καθαριότητα αίθουσας εκδηλώσεων υψηλής επισκεψιμότητας προς διενέργεια σεμιναρίων, θεατρικών παραστάσεων, προβολών ταινιών και φοιτητικών πάρτι.</li>
+            <li>Χρήση σκούπας υγρών – στερεών (Wet & Dry vacuum cleaner).</li>
+            <li>Απολύμανση επιφανειών, συλλογή απορριμμάτων, τήρηση κανόνων υγιεινής και ασφάλειας.</li>
+          </ul>
+        </div>
+
+        <!-- Remote IT / Freelance 2020-2022 -->
+        <div class="timeline-item">
+          <span class="timeline-date">2020 – 2022</span>
+          <div class="timeline-title">Εξ αποστάσεως Τεχνική Υποστήριξη & Διαχείριση Περιεχομένου (Remote / Freelance)</div>
+          <ul class="timeline-bullets">
+            <li>Ανεξάρτητη Συνεργασία & Ανάληψη Έργου: Απευθείας ανάληψη και διεκπεραίωση ψηφιακών έργων (micro-projects) για ιδιώτες/πελάτες εξωτερικού μέσω διεθνών πλατφορμών (Upwork, Fiverr, Freelancer, PeoplePerHour) με λήψη αμοιβής μέσω paypal.</li>
+            <li>Τεχνική Υποστήριξη & Troubleshooting: Παροχή εξ αποστάσεως τεχνικής υποστήριξης σε χρήστες λειτουργικών συστημάτων και εφαρμογών, καθώς και σε κατόχους επαγγελματικών ιστοσελίδων.</li>
+            <li>Διαχείριση και ενημέρωση περιεχομένου ιστοσελίδων: Προσθήκη νέου περιεχομένου, προσαρμογή της δομής και της εμφάνισης ιστοσελίδων, διενέργεια υποστηρικτικών εργασιών συντήρησης.</li>
+            <li>Ανάληψη επιπρόσθετων micro-projects: Δημιουργία, επεξεργασία και προσαρμογή ψηφιακών εικόνων, διαχείριση επαγγελματικών προφίλ στα social media, ταξινόμηση, μετονομασία και αρχειοθέτηση ψηφιακών αρχείων και εγγράφων.</li>
+          </ul>
+        </div>
+
+        <!-- ΑΜΑΡ -->
+        <div class="timeline-item">
+          <span class="timeline-date">2015 – 2019</span>
+          <div class="timeline-title">Κατάστημα Ψιλικών Ειδών «ΑΜΑΡ»</div>
+          <ul class="timeline-bullets">
+            <li>Πωλήσεις και εξυπηρέτηση πελατών.</li>
+            <li>Διαχείριση ταμείου και καθημερινών λειτουργιών καταστήματος.</li>
+            <li>Διενέργεια τηλεφωνικών παραγγελιών και ελέγχου εμπορευμάτων.</li>
+          </ul>
+        </div>
+
+        <!-- Κήπος -->
+        <div class="timeline-item">
+          <span class="timeline-date">2014</span>
+          <div class="timeline-title">Ταβέρνα «Κήπος» – Λαντζιέρης</div>
+          <ul class="timeline-bullets">
+            <li>Υποστήριξη καθημερινών λειτουργιών της κουζίνας.</li>
+            <li>Προετοιμασία σαλατών, ορεκτικών και συνοδευτικών πιάτων.</li>
+            <li>Καθαρισμός και απολύμανση σκευών και εξοπλισμού κουζίνας.</li>
+          </ul>
+        </div>
+
+        <!-- WordPress 2013 -->
+        <div class="timeline-item">
+          <span class="timeline-date">2013</span>
+          <div class="timeline-title">Σχεδιασμός & Ανάπτυξη Επαγγελματικών Ιστοσελίδων (Remote / Freelance)</div>
+          <ul class="timeline-bullets">
+            <li>Ανάπτυξη και Παραμετροποίηση (Customization) ιστοσελίδων με τη χρήση της πλατφόρμας WordPress σε συνεργασία με ιδιώτες/επαγγελματίες.</li>
+            <li>Διαμόρφωση Θεμάτων και Προτύπων (Themes & Templates), εγκατάσταση Προσθέτων (Plugins) και παροχή βασικής τεχνικής υποστήριξης.</li>
+            <li>Διαχείριση Web Hosting & Deployment: Αγορά και διαχείριση ονομάτων χώρου (Domains) και πακέτων φιλοξενίας (Web Hosting – papaki.com) για λογαριασμό και με οικονομική επιβάρυνση των πελατών καθώς και μεταφορά/ανέβασμα ιστοσελίδων από το τοπικό περιβάλλον (Localhost) σε live servers μέσω FTP (FileZilla).</li>
+          </ul>
+        </div>
+
+        <!-- JBattles -->
+        <div class="timeline-item">
+          <span class="timeline-date">2010 – 2012</span>
+          <div class="timeline-title">Internet Café «JBattles»</div>
+          <ul class="timeline-bullets">
+            <li>Εξυπηρέτηση πελατών.</li>
+            <li>Διαχείριση καθημερινής λειτουργίας χώρου.</li>
+          </ul>
+        </div>
+
+        <!-- Διανομή Εντύπων -->
+        <div class="timeline-item">
+          <span class="timeline-date">2005 – 2007 & 2009</span>
+          <div class="timeline-title">Διανομή Διαφημιστικών Εντύπων (Εποχική εργασία)</div>
+          <span style="color: var(--text-muted); font-size: 0.85rem;">*Κατά τις θερινές περιόδους των αναφερθέντων ετών.</span>
+        </div>
+
+      </div>
+    </details>
+
+    <!-- Dropdown 3: Δεξιότητες -->
+    <details class="page-dropdown">
+      <summary>
+        <span>Δεξιότητες</span>
+        <span class="toggle-icon">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </span>
+      </summary>
+      <div class="dropdown-content">
+        <div class="timeline-item">
+          <div class="timeline-title">Γενικές Γνώσεις Η/Υ</div>
+          <ul class="timeline-bullets">
+            <li>Άριστη γνώση Η/Υ</li>
+          </ul>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-title">Λειτουργικά Συστήματα & Τεχνική Υποστήριξη</div>
+          <ul class="timeline-bullets">
+            <li>Προχωρημένη γνώση Windows: Τεχνική υποστήριξη, αντιμετώπιση προβλημάτων (Troubleshooting), βελτιστοποίηση και παραμετροποίηση.</li>
+            <li>Γνώση περιβάλλοντος Linux & Bash Scripting: Βασική διαχείριση συστήματος, αυτοματοποίηση απλών εργασιών.</li>
+          </ul>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-title">Τεχνολογίες Web & CMS</div>
+          <ul class="timeline-bullets">
+            <li>HTML, CSS</li>
+            <li>WordPress / CMS</li>
+          </ul>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-title">Ψηφιακή Επεξεργασία Εικόνας & Γραφικών</div>
+          <ul class="timeline-bullets">
+            <li>Adobe Photoshop</li>
+            <li>Krita</li>
+            <li>Inkscape</li>
+          </ul>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-title">Εφαρμογές Γραφείου</div>
+          <ul class="timeline-bullets">
+            <li>MS Word, Excel, PowerPoint</li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+  </div>
+
+  <!-- Lightbox Overlay Modal -->
+  <div id="image-modal" class="image-modal">
+    <img src="file:///home/vasilis/Downloads/Photos Of Me/Firefly.png" alt="Βασίλειος Σαλάκος">
+  </div>
+
+  <!-- Hover Script for Photo Modal -->
+  <script>
+    const photoCard = document.querySelector('.photo-card');
+    const modal = document.getElementById('image-modal');
+
+    photoCard.addEventListener('click', () => {
+      modal.classList.add('active');
+    });
+
+    modal.addEventListener('click', () => {
+      modal.classList.remove('active');
+    });
+  </script>
+  <!-- Theme Switcher JavaScript Logic -->
+<script>
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+
+    function updateThemeIcon(isLight) {
+      if (isLight) {
+        themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+      } else {
+        themeIcon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
+      }
+    }
+
+    // Ανάγνωση από localStorage κατά τη φόρτωση
+    const isLightInitial = localStorage.getItem('theme') === 'light';
+    if (isLightInitial) {
+      document.body.classList.add('light-theme');
+    }
+    updateThemeIcon(isLightInitial);
+
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('light-theme');
+      const isLight = document.body.classList.contains('light-theme');
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      updateThemeIcon(isLight);
+    });
+  </script>
+</body>
+</html>

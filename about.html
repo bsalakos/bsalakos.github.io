@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+<script>
+  // Άμεσος έλεγχος πριν ζωγραφιστεί η σελίδα
+  if (localStorage.getItem('theme') === 'light') {
+    document.documentElement.classList.add('light-theme');
+  }
+</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Προφίλ — Βασίλειος Σαλάκος</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    /* Default Dark Theme Variables */
+    :root {
+      --bg-color: linear-gradient(135deg, #1e1e2f, #3f3f5f);
+      --text-color: #e8e8f0;
+      --text-muted: rgba(232, 232, 240, 0.6);
+      --text-sub: rgba(232, 232, 240, 0.85);
+      
+      --card-bg: #ffffff14;
+      --card-border: rgba(255, 255, 255, 0.12);
+      --card-border-hover: rgba(255, 255, 255, 0.25);
+      --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+      --divider-color: rgba(255, 255, 255, 0.12);
+      
+      --icon-color: #e8e8f0;
+      --hover-bg: rgba(255, 255, 255, 0.12);
+      --menu-bg: rgba(30, 30, 47, 0.95);
+      --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.15);
+      --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.4);
+      
+      --modal-overlay: rgba(0, 0, 0, 0.75);
+      --theme-border: transparent;
+      --header-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+    }
+
+    body.light-theme {
+      --bg-color: radial-gradient(circle at 50% 45%, rgba(255,255,255,.8) 0%, transparent 38%), 
+                  radial-gradient(circle at 85% 15%, rgba(190,190,235,.22), transparent 35%), 
+                  linear-gradient(135deg, #edf2f8 0%, #dce5f0 55%, #d8dced 100%);
+      --text-color: rgba(43, 78, 116, 0.95);
+      --text-muted: rgba(42, 64, 89, 0.65);
+      --text-sub: rgba(43, 78, 116, 0.85);
+      --title-color: rgba(25, 50, 77, 0.75);
+      
+      --card-bg: rgba(43, 78, 116, 0.051);
+      --card-border: rgba(43, 78, 116, 0.169);
+      --card-border-hover: rgba(43, 78, 116, 0.169);
+      --card-shadow: 0 4px 12px rgba(43, 78, 116, 0.180);
+      --divider-color: rgba(43, 78, 116, 0.15);
+      
+      --icon-color: rgba(43, 78, 116, 0.878);
+      --hover-bg: rgba(43, 78, 116, 0.12);
+      --menu-bg: rgba(255, 255, 255, 0.15);
+      --shadow-sm: 0 4px 12px rgba(43, 78, 116, 0.180);
+      --shadow-lg: 0 4px 12px rgba(43, 78, 116, 0.180);
+
+      --modal-border: rgba(43, 78, 116, 0.25);
+      --theme-border: rgba(43, 78, 116, 0.169);
+      --header-shadow: 0 2px 5px rgba(43, 78, 116, 0.180);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: var(--bg-color);
+      background-attachment: fixed;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text-color);
+      padding: 3rem 1rem;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .page-container {
+      width: 100%;
+      max-width: 680px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Top Navigation Header */
+    .page-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--divider-color);
+      padding-bottom: 1.2rem;
+      transition: border-color 0.3s ease;
+    }
+    .page-title {
+      height: 38px;
+      padding: 0 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      box-shadow: var(--header-shadow);
+      margin-bottom: -0.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .page-title h1 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 500;
+      line-height: 1;
+      color: var(--text-color);
+    }
+
+    .page-title .title-icon {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: var(--icon-color);
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      display: block;
+      flex-shrink: 0;
+      transition: stroke 0.3s ease;
+    }
+
+    /* Navigation Dropdown Wrapper (Δεξιά) */
+    .nav-dropdown-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      position: relative;
+      margin-bottom: -0.2rem;
+    }
+
+    /* Dropdown Trigger */
+    .nav-dropdown {
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .home-link, .theme-toggle-btn, .dropdown-trigger {
+      height: 38px;
+      padding: 0 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-color);
+      cursor: pointer;
+      opacity: 0.9;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      list-style: none;
+      box-shadow: var(--header-shadow);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .dropdown-trigger::-webkit-details-marker {
+      display: none;
+    }
+
+    .home-link:hover, .theme-toggle-btn:hover, .dropdown-trigger:hover,
+    .nav-dropdown[open] .dropdown-trigger {
+      opacity: 1;
+      color: var(--title-color);
+      background: var(--hover-bg);
+      border-color: var(--card-border-hover);
+      box-shadow: var(--card-shadow);
+    }
+
+    .home-link svg, .theme-toggle-btn svg, .hamburger-icon {
+      display: block;
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      will-change: transform;
+      transform: translateZ(0);
+    }
+
+    .nav-dropdown[open] .hamburger-icon {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      right: 0;
+      left: auto;
+      min-width: 150px;
+      background: var(--menu-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 0.4rem;
+      box-shadow: var(--shadow-lg);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: 0.88rem;
+      padding: 0.45rem 0.6rem;
+      border-radius: 6px;
+      opacity: 0.85;
+      transition: background 0.2s ease, opacity 0.2s ease;
+    }
+
+    .menu-item svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .menu-item:hover {
+      background: var(--hover-bg);
+    }
+
+    /* Unified About Card */
+    .about-card {
+      background: var(--card-bg);
+      box-shadow: var(--card-shadow);
+      border: 1px solid var(--theme-border);
+      border-radius: 12px;
+      padding: 1.8rem;
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Floating Image */
+    .about-photo-wrapper {
+      float: left;
+      width: 180px;
+      height: 220px;
+      margin-right: 1.5rem;
+      margin-bottom: 0.8rem;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--card-border);
+      cursor: pointer;
+      transition: border-color 0.3s ease;
+    }
+
+    .about-photo-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .about-photo-wrapper:hover img {
+      transform: scale(1.03);
+    }
+
+    .about-text {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--text-sub);
+    }
+
+    .about-text p {
+      margin: 0 0 1.2rem 0;
+    }
+
+    .about-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    .about-card::after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+    @media (max-width: 560px) {
+      .about-photo-wrapper {
+        float: none;
+        width: 100%;
+        height: 240px;
+        margin-right: 0;
+        margin-bottom: 1.2rem;
+      }
+      .about-card {
+        padding: 1.2rem;
+      }
+    }
+
+    /* Lightbox Modal */
+    .image-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: var(--modal-overlay);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+      transition: background-color 0.3s ease;
+    }
+    .image-modal img {
+      max-width: 60vw;
+      max-height: 60vh;
+      width: auto;
+      height: auto;
+      border-radius: 0px;
+      box-shadow: var(--shadow-lg);
+      border: 10px solid var(--card-border-hover);
+      object-fit: contain;
+    }
+    .image-modal.active {
+      display: flex;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-container">
+
+    <!-- Header Navigation -->
+    <header class="page-header">
+      <!-- Τίτλος Αριστερά (Badge) -->
+      <div class="page-title">
+        <svg class="title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        <h1>Προφίλ</h1>
+      </div>
+
+      <!-- Κουμπιά Πλοήγησης Δεξιά -->
+      <div class="nav-dropdown-wrapper">
+        <!-- Κουμπί Εναλλαγής Θέματος (Light/Dark) -->
+        <button class="theme-toggle-btn" id="themeToggle" title="Εναλλαγή Θέματος">
+        <svg id="themeIcon" viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        </button>
+        <a class="home-link" href="index.html">
+        <svg viewBox="0 0 24 24">
+            <path d="M3 10L12 3l9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V10z M9.5 21v-6a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v6" />
+        </svg>
+        </a>
+        <details class="nav-dropdown">
+          <summary class="dropdown-trigger" title="Μενού Πλοήγησης">
+            <svg class="hamburger-icon" viewBox="0 0 24 24">
+                <line x1="4" y1="6" x2="20" y2="6"></line>
+                <line x1="4" y1="12" x2="20" y2="12"></line>
+                <line x1="4" y1="18" x2="20" y2="18"></line>
+            </svg>
+          </summary>
+          <div class="dropdown-menu">
+            <a href="bio.html" class="menu-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <polyline points="10 9 9 9 8 9"/>
+              </svg>
+              <span>Bio</span>
+            </a>
+            <a href="projects.html" class="menu-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9"/>
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+              </svg>
+              <span>Projects</span>
+            </a>
+            <a href="hobbies.html" class="menu-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 21a9 9 0 1 1 0-18c4.97 0 9 3.58 9 8 0 2.5-2 4.5-4.5 4.5h-1.3c-.7 0-1.2.6-1.2 1.3 0 .3.1.6.3.8.4.5.7 1.2.7 1.9 0 1.5-1.3 1.5-3 1.5z"></path>
+                <circle cx="7.5" cy="14.5" r="0.6" fill="currentColor"></circle>
+                <circle cx="7.5" cy="9.5" r="0.6" fill="currentColor"></circle>
+                <circle cx="12" cy="7" r="0.6" fill="currentColor"></circle>
+                <circle cx="16.5" cy="9.5" r="0.6" fill="currentColor"></circle>
+              </svg>
+              <span>Hobbies</span>
+            </a>
+            <a href="blog.html" class="menu-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 2.5 0 3-2 5"/>
+                <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 2.5 0 3-2 5"/>
+              </svg>
+              <span>Blog</span>
+            </a>
+          </div>
+        </details>
+      </div>
+    </header>
+
+    <!-- Unified Card -->
+    <article class="about-card">
+      <div class="about-photo-wrapper" id="photo-trigger">
+        <img src="file:///home/vasilis/Downloads/Firefly.png" alt="Βασίλειος Σαλάκος" onerror="this.style.display='none'">
+      </div>
+
+      <div class="about-text">
+        <p>Ονομάζομαι Σαλάκος Βασίλειος, γεννήθηκα και μεγάλωσα στην πόλη της Θεσσαλονίκης, όπου κατοικώ μέχρι και σήμερα.</p>
+
+        <p>Θεωρώ εαυτόν ικανό τόσο για σωματική όσο και για πνευματική εργασία, χωρίς η μία μορφή απασχόλησης να αναιρεί ή να υποβαθμίζει την άλλη — πεποίθηση που, κατά τη γνώμη μου, οφείλει να αποτελεί θεμελιώδη αρχή για κάθε σύγχρονο επαγγελματία, ανεξαρτήτως του τομέα δραστηριοποίησής του. Διαθέτω έμφυτη όρεξη για δουλειά και προσπαθώ πάντοτε να είμαι παραγωγικός και να δουλεύω με ταχύτητα, χωρίς ωστόσο να θυσιάζω στον βωμό της ταχύτητας την ποιότητα του τελικού αποτελέσματος.</p>
+
+        <p>Η προσαρμοστικότητά μου σε νέα περιβάλλοντα, και η ικανότητα να αφομοιώνω νέες γνώσεις και διαδικασίες, αποτελούν κάποια από τα ισχυρότερα χαρακτηριστικά μου.<br>
+        Διαθέτω ανεπτυγμένες επικοινωνιακές δεξιότητες, τις οποίες συνοδεύει πάντοτε η ευγένεια και η ειλικρινής διάθεση συνεργασίας — τόσο απέναντι στον συνάδελφο, όσο και απέναντι στον πελάτη και συνάνθρωπο.<br>
+        Είμαι καλός χειριστής της Ελληνικής γλώσσας και διακατέχομαι από ομαδικό πνεύμα, πράγμα που στις μέρες μας εκλείπει από ολόκληρους επαγγελματικούς κλάδους, θα έλεγα, με τα άτομα να τείνουν να αντιλαμβάνονται τους εαυτούς ως μονάδες και όχι ως μέρη μιας ευρύτερης συλλογικής προσπάθειας.</p>
+
+        <p>Παραμένω δε ανοικτός σε νέες επαγγελματικές προκλήσεις και σε αντικείμενα άγνωστα ή μερικώς γνωστά προς εμένα, αντιμετωπίζοντας κάθε τέτοια πρόκληση όχι φοβικά αλλά θετικά, ως ευκαιρία περαιτέρω εξέλιξης. Οι τομείς που μου προκαλούν ιδιαίτερο ενδιαφέρον, στην παρούσα συγκυρία, είναι οι τομείς των logistics, της τεχνολογίας, καθώς και των πωλήσεων — πεδία τα οποία, πέραν της πρακτικής τους αξίας, είναι και αυτά στα οποία θεωρώ ότι μου αρέσει να εργάζομαι και ότι μπορώ να είμαι αποδοτικός, φέρνοντας πάντοτε το αποτέλεσμα, χωρίς ωστόσο να είμαι αρνητικός σε επαγγελματικές προοπτικές που ενδεχομένως δεν έχω σκεφτεί ή δεν έχω ανακαλύψει ακόμα κάποιο προσωπικό ενδιαφέρον γι' αυτές.</p>
+      </div>
+    </article>
+
+  </div>
+
+  <div id="image-modal" class="image-modal">
+    <img src="file:///home/vasilis/Desktop/Gemini.jpeg" alt="Βασίλειος Σαλάκος">
+  </div>
+
+  <script>
+    const photoTrigger = document.getElementById('photo-trigger');
+    const modal = document.getElementById('image-modal');
+
+    photoTrigger.addEventListener('click', () => {
+      modal.classList.add('active');
+    });
+
+    modal.addEventListener('click', () => {
+      modal.classList.remove('active');
+    });
+  </script>
+<script>
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+
+    function updateThemeIcon(isLight) {
+      if (isLight) {
+        themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+      } else {
+        themeIcon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
+      }
+    }
+
+    // Ανάγνωση από localStorage κατά τη φόρτωση
+    const isLightInitial = localStorage.getItem('theme') === 'light';
+    if (isLightInitial) {
+      document.body.classList.add('light-theme');
+    }
+    updateThemeIcon(isLightInitial);
+
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('light-theme');
+      const isLight = document.body.classList.contains('light-theme');
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      updateThemeIcon(isLight);
+    });
+  </script>
+</body>
+</html>
