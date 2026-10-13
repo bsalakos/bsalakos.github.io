@@ -1,0 +1,1587 @@
+  * { box-sizing: border-box; }
+
+    /* Default Dark Theme Variables */
+    :root {
+      --bg-color: linear-gradient(135deg, #1e1e2f, #3f3f5f);
+
+      --text-color: #e8e8f0;
+      --text-muted: rgba(232, 232, 240, 0.6);
+      --text-sub: rgba(232, 232, 240, 0.85);
+      --title-color: #ffffff;
+
+      --card-bg: rgba(255, 255, 255, 0.078);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --card-border-hover: rgba(255, 255, 255, 0.25);
+      --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+      --divider-color: rgba(255, 255, 255, 0.1);
+
+      --icon-color: #e8e8f0;
+      --hover-bg: rgba(255, 255, 255, 0.12);
+      --menu-bg: rgba(30, 30, 47, 0.95);
+      --modal-border: rgba(255, 255, 255, 0.2);
+
+      --theme-border: transparent;
+      --header-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+      --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.15);
+      --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.4);
+
+      --project-card-border: rgba(255, 255, 255, 0.08);
+
+      --code-box-bg: rgba(0, 0, 0, 0.25);
+      --code-box-text: #a6accd;
+
+      --player-card-border: rgba(255, 255, 255, 0.05);
+      --playlist-bg: rgba(0, 0, 0, 0.15);
+      --playlist-active-bg: rgba(255, 255, 255, 0.2);
+      --playlist-active-border: rgba(255, 255, 255, 0.3);
+      --playlist-hover-border: rgba(255, 255, 255, 0.18);
+      --play-btn-hover-border: rgba(255, 255, 255, 0.25);
+      --action-btn-hover-border: rgba(255, 255, 255, 0.12);
+
+      --logos-modal-overlay: rgba(0, 0, 0, 0.65);
+      --logos-close-btn-color: #e8e8f0;
+      --grid-item-border: rgba(255, 255, 255, 0.08);
+    }
+
+    /* Light Theme Palette Definition */
+    body.light-theme {
+      --bg-color: radial-gradient(circle at 50% 45%, rgba(255,255,255,.8) 0%, transparent 38%), 
+                  radial-gradient(circle at 85% 15%, rgba(190,190,235,.22), transparent 35%), 
+                  linear-gradient(135deg, #edf2f8 0%, #dce5f0 55%, #d8dced 100%);
+      --text-color: rgba(43, 78, 116, 0.95);
+      --text-muted: rgba(42, 64, 89, 0.65);
+      --text-sub: rgba(43, 78, 116, 0.85);
+      --title-color: rgba(25, 50, 77, 0.75);
+      
+      --card-bg: rgba(43, 78, 116, 0.051);
+      --card-border: rgba(43, 78, 116, 0.169);
+      --card-border-hover: rgba(43, 78, 116, 0.169);
+      --card-shadow: 0 4px 12px rgba(43, 78, 116, 0.180);
+      --divider-color: rgba(43, 78, 116, 0.15);
+      
+      --icon-color: rgba(43, 78, 116, 0.878);
+      --hover-bg: rgba(43, 78, 116, 0.12);
+      --menu-bg: rgba(255, 255, 255, 0.15);
+      --modal-border: rgba(43, 78, 116, 0.25);
+
+      --theme-border: rgba(43, 78, 116, 0.169);
+      --header-shadow: 0 2px 5px rgba(43, 78, 116, 0.180);
+      --shadow-sm: 0 2px 5px rgba(43, 78, 116, 0.1);
+      --shadow-lg: 0 8px 20px rgba(43, 78, 116, 0.25);
+
+      --project-card-border: rgba(43, 78, 116, 0.169);
+
+      --code-box-bg: rgba(43, 78, 116, 0.08);
+      --code-box-text: rgba(25, 50, 80, 0.9);
+
+      --player-card-border: rgba(43, 78, 116, 0.169);
+      --playlist-bg: rgba(43, 78, 116, 0.051);
+      --playlist-active-bg: rgba(43, 78, 116, 0.12);
+      --playlist-active-border: rgba(43, 78, 116, 0.25);
+      --playlist-hover-border: rgba(43, 78, 116, 0.25);
+      --play-btn-hover-border: rgba(43, 78, 116, 0.25);
+      --action-btn-hover-border: rgba(43, 78, 116, 0.25);
+
+      --logos-modal-overlay: rgba(43, 78, 116, 0.65);
+      --logos-close-btn-color: #e8e8f0;
+      --grid-item-border: rgba(43, 78, 116, 0.169);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg-color);
+      background-attachment: fixed;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text-color);
+      transition: background 0.3s ease, color 0.3s ease;
+      position: relative;
+    }
+
+    body.home-layout {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    body.page-layout {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem 1rem;
+    }
+
+    /* ============================= <Index CSS> ============================= */
+    /* Top-left Control Buttons Container */
+    .top-left-controls {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      gap: 10px;
+      z-index: 100;
+      align-items: center;
+    }
+
+    /* Round Control Buttons */
+    .round-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 22px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--card-bg);
+      border: 1px solid var(--theme-border);
+      box-shadow: var(--card-shadow);
+      color: var(--icon-color);
+      text-decoration: none;
+      cursor: pointer;
+      transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, border-color 0.3s ease;
+      overflow: hidden;
+      white-space: nowrap;
+      padding-left: 11px;
+      padding-right: 14px;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    /* Icon styles */
+    .round-btn svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: var(--icon-color);
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      display: block;
+      flex-shrink: 0;
+      transition: stroke 0.3s ease;
+    }
+
+    /* Expandable Buttons Text Styling */
+    .expandable-btn .btn-text {
+      opacity: 0;
+      max-width: 0;
+      overflow: hidden;
+      transition: opacity 0.2s ease, max-width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    /* Hover states with exact expanded widths */
+    .alt-ui-btn:hover {
+      width: 155px;
+    }
+
+    .alt-ui-btn:hover .btn-text {
+      opacity: 1;
+      max-width: 110px;
+    }
+
+    .home-theme-toggle-btn:hover {
+      width: 190px;
+    }
+
+    .home-theme-toggle-btn:hover .btn-text {
+      opacity: 1;
+      max-width: 145px;
+    }
+
+    .container {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .icon-link {
+      width: 100px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.7rem;
+      transition: transform 0.2s ease;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      transform: translateZ(0);
+      will-change: transform;
+    }
+
+    .icon-link:hover { 
+      transform: scale(1.1) translateZ(0);
+    }
+
+    .icon-box {
+      width: 80px;
+      height: 80px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--card-bg);
+      border: 1px solid var(--theme-border);
+      box-shadow: var(--card-shadow);
+      transition: all 0.3s ease;
+      backface-visibility: hidden;
+      transform: translateZ(0);
+    }
+
+    .icon-box svg {
+      width: 40px;
+      height: 40px;
+      fill: none;
+      stroke: var(--icon-color);
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      shape-rendering: geometricPrecision;
+      display: block;
+      transition: stroke 0.3s ease;
+    }
+
+    .label {
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+      opacity: 0.9;
+      font-weight: 500;
+    }
+
+    @media (max-width: 520px) {
+      .container { gap: 1.4rem; }
+      .icon-link { width: 88px; }
+      .top-left-controls { top: 15px; left: 15px; }
+    }
+    /* ============================= </Index CSS> ============================ */
+
+    /* ========================== <Pages Common CSS> ========================= */
+    .page-container {
+      width: 100%;
+      max-width: 680px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Top Navigation Header — Τίτλος αριστερά, Πλοήγηση δεξιά */
+    .page-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 1.2rem;
+    }
+
+    /* Title Badge Style (Αριστερά) */
+    .page-title {
+      height: 38px;
+      padding: 0 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      box-shadow: var(--header-shadow);
+      margin-bottom: -0.2rem;
+    }
+
+    .page-title h1 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 500;
+      line-height: 1;
+      color: var(--text-color);
+    }
+
+    .page-title .title-icon {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: var(--icon-color);
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      display: block;
+      flex-shrink: 0;
+    }
+
+     div#subsections { 
+      display: flex;
+      gap: 0.35rem;
+      margin-bottom: -0.2rem;
+    }
+
+    /* Navigation Dropdown Wrapper (Δεξιά) */
+    .nav-dropdown-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      position: relative;
+      margin-bottom: -0.2rem;
+    }
+
+    /* Dropdown Trigger */
+    .nav-dropdown {
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .home-link, .theme-toggle-btn, .ui-toggle-btn, .dropdown-trigger {
+      height: 38px;
+      padding: 0 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-color);
+      cursor: pointer;
+      opacity: 0.9;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      list-style: none;
+      box-shadow: var(--header-shadow);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .dropdown-trigger::-webkit-details-marker {
+      display: none;
+    }
+
+    .home-link:hover, .theme-toggle-btn:hover, .ui-toggle-btn:hover, .dropdown-trigger:hover,
+    .nav-dropdown.is-open .dropdown-trigger {
+      opacity: 1;
+      color: var(--title-color);
+      background: var(--hover-bg);
+      border-color: var(--card-border-hover);
+      box-shadow: var(--card-shadow);
+    }
+
+    .home-link svg, .theme-toggle-btn svg, .ui-toggle-btn svg, .hamburger-icon, .chevron-icon {
+      display: block;
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      will-change: transform;
+      transform: translateZ(0);
+    }
+
+    .nav-dropdown.is-open .hamburger-icon, .nav-dropdown.is-open .chevron-icon {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      right: 0;
+      left: auto;
+      min-width: 190px;
+      background: var(--menu-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 0.4rem;
+      box-shadow: var(--card-shadow);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;      
+      /* Κατάσταση όταν είναι κλειστό (ή όταν κλείνει) */
+      transform-origin: top right;
+      transform: scale(0.15);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none; 
+      /* Ορίζουμε το transition και για τις δύο καταστάσεις */
+      transition: transform 0.85s cubic-bezier(0.34, 1, 0.64, 1), 
+                  opacity 0.45s ease, 
+                  visibility 0.45s ease;
+    }
+
+    /* Όταν το parent <details> είναι open */
+    .nav-dropdown.is-open .dropdown-menu {
+      transform: scale(1);
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: 0.88rem;
+      padding: 0.45rem 0.6rem;
+      border-radius: 6px;
+      opacity: 0.85;
+      white-space: nowrap; /* Αποτρέπει το σπάσιμο των λέξεων σε δύο γραμμές */
+      transition: background 0.2s ease, opacity 0.2s ease;
+    }
+
+    .menu-item svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .menu-item:hover {
+      opacity: 1;
+      background: var(--hover-bg);
+    }
+
+    .has-tooltip {
+      position: relative;
+    }
+
+    .global-tooltip {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%) translateY(-4px);
+      background: var(--menu-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: var(--text-color);
+      border: 1px solid var(--card-border);
+      padding: 0.4rem 0.7rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-family: Arial, Helvetica, sans-serif;
+      white-space: nowrap;
+      box-shadow: var(--header-shadow);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      z-index: 1000;
+      transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.1s ease;
+    }
+
+    .global-tooltip.is-visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Dropdown Accordions */
+    .page-dropdown {
+      background: var(--card-bg);
+      box-shadow: var(--card-shadow);
+      border-radius: 12px;
+      padding: 0.9rem 1.2rem;
+      border: 1px solid var(--theme-border);
+    }
+    .page-dropdown summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      opacity: 0.9;
+      user-select: none;
+      list-style: none;
+    }
+    .page-dropdown summary::-webkit-details-marker {
+      display: none;
+    }
+    
+    .toggle-icon {
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease;
+      opacity: 0.85;
+      will-change: transform;
+    }
+    .page-dropdown[open] .toggle-icon {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-content {
+      margin-top: 1rem;
+      padding-top: 0.8rem;
+      border-top: 1px solid var(--divider-color);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      opacity: 0.88;
+    }
+
+    /* Modal Overlay */
+    .image-modal {
+      display: flex;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(5px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      cursor: zoom-out;
+    }
+
+    .image-modal img {
+      max-width: 60vw;
+      max-height: 60vh;
+      width: auto;
+      height: auto;
+      border-radius: 0px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      border: 10px solid var(--modal-border);
+      object-fit: contain;
+      cursor: zoom-out;
+      transform: scale(0.95);
+      transition: transform 0.3s ease;
+    }
+
+    .image-modal.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .image-modal.active img {
+      transform: scale(1);
+    }
+
+    .lightbox-trigger {
+        cursor: pointer;
+    }
+    /* ========================= </Pages Common CSS> ========================= */
+
+    /* ============================== <Bio CSS> ============================== */
+    /* Top Grid Section */
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 1.2rem;
+      align-items: stretch;
+    }
+
+    .photo-card {
+      background: var(--card-bg);
+      border: 1px solid var(--theme-border);
+      box-shadow: var(--card-shadow);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      cursor: pointer;
+      min-height: 180px;
+    }
+
+    .photo-wrapper {
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .photo-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 46% 15%;
+      transform: scale(1.05) rotate(0deg);
+      display: block;
+    }
+
+    .details-card {
+      background: var(--card-bg);
+      box-shadow: var(--card-shadow);
+      border: 1px solid var(--theme-border);
+      border-radius: 12px;
+      padding: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .details-card h2 {
+      margin: 0 0 0.8rem 0;
+      font-size: 1.15rem;
+      font-weight: 500;
+      border-bottom: 1px solid var(--divider-color);
+      padding-bottom: 0.5rem;
+    }
+    .info-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1rem 0;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+    .info-list li span {
+      color: var(--text-muted);
+    }
+
+    /* Social Icons Row */
+    .social-row {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      padding-top: 0.8rem;
+      border-top: 1px solid var(--divider-color);
+    }
+    .social-row a {
+      color: var(--title-color);
+      opacity: 0.8;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      display: flex;
+      align-items: center;
+    }
+    .social-row a:hover {
+      opacity: 1;
+      transform: translateY(-2px);
+    }
+    .social-row svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Original Timeline Item Design */
+    .timeline-item {
+      margin-bottom: 1.8rem;
+    }
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+    .timeline-date {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      display: block;
+    }
+    .timeline-title {
+      font-weight: 500;
+      color: var(--title-color);
+      margin: 0.0rem 0 0.3rem 0;
+    }
+    .timeline-desc {
+      margin: 0;
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
+
+    /* Clean Bullets Style */
+    .timeline-bullets {
+      margin: 0.7rem 0 0 0;
+      padding-left: 1.2rem;
+      font-size: 0.85rem;
+      line-height: 1.7;
+      opacity: 0.85;
+    }
+    .timeline-bullets li {
+      margin-bottom: 0.7rem;
+    }
+    .timeline-bullets li:last-child {
+      margin-bottom: 0;
+    }
+
+    @media (max-width: 560px) {
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    /* ============================== </Bio CSS> ============================= */
+
+    /* ============================== <About CSS> ============================ */
+    /* Unified About Card */
+    .about-card {
+      background: var(--card-bg);
+      box-shadow: var(--card-shadow);
+      border: 1px solid var(--theme-border);
+      border-radius: 12px;
+      padding: 1.8rem;
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Floating Image */
+    .about-photo-wrapper {
+      float: left;
+      width: 180px;
+      height: 220px;
+      margin-right: 1.5rem;
+      margin-bottom: 0.8rem;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--card-border);
+      cursor: pointer;
+      transition: border-color 0.3s ease;
+    }
+
+    .about-photo-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 76% 15%;
+      transform: scale(1.05) rotate(0deg) translateY(0) translateZ(0);
+      display: block;
+      transition: transform 0.3s ease;
+
+      /* Hardware Acceleration & GPU Anti-jitter Fix */
+      will-change: transform;
+      backface-visibility: hidden;
+    }
+
+    .about-photo-wrapper:hover img {
+      transform: scale(1.03);
+    }
+
+    .about-text {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--text-sub);
+    }
+
+    .about-text p {
+      margin: 0 0 1.2rem 0;
+    }
+
+    .about-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    .about-card::after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+    @media (max-width: 560px) {
+      .about-photo-wrapper {
+        float: none;
+        width: 100%;
+        height: 240px;
+        margin-right: 0;
+        margin-bottom: 1.2rem;
+      }
+      .about-card {
+        padding: 1.2rem;
+      }
+    }
+    /* ============================== </About CSS> =========================== */
+
+    /* ============================= <Projects CSS> ========================== */
+    /* Single Column Layout (Compact) */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    /* Compact Single Column Project Card */
+    .project-card {
+      background: var(--card-bg);
+      box-shadow: var(--header-shadow);
+      border-radius: 10px;
+      padding: 0.8rem 1.2rem;
+      min-height: 54px;
+      border: 1px solid var(--project-card-border);
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      text-decoration: none;
+      color: var(--title-color);
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-2px);
+      background: var(--hover-bg);
+      border-color: var(--card-border-hover);
+    }
+
+    .card-icon {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: var(--title-color);
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: 0.9;
+      flex-shrink: 0;
+    }
+
+    .project-card h2 {
+      margin: 0;
+      font-size: 0.98rem;
+      font-weight: 500;
+      color: var(--title-color);
+      line-height: 1.2;
+    }
+    /* ============================= </Projects CSS> ========================= */
+
+    /* ============================= <Hobbies CSS> =========================== */
+    /* Grid Layout - 3 Columns × 2 Rows */
+    .hobbies-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+    }
+
+    .hobby-card {
+      background: var(--card-bg);
+      border: 1px solid var(--project-card-border);
+      box-shadow: var(--card-shadow);
+      border-radius: 12px;
+      padding: 1.6rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+      aspect-ratio: 1 / 0.95;
+      
+      /* Hardware Acceleration & GPU Anti-jitter Fix */
+      will-change: transform;
+      backface-visibility: hidden;
+      transform: translateY(0) translateZ(0);
+    }
+
+    .hobby-card:hover {
+      transform: translateY(-3px) translateZ(0);
+      background: var(--hover-bg);
+    }
+
+    /* Εικονίδια: 48px */
+    .hobby-icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--icon-color);
+      transition: color 0.3s ease;
+    }
+
+    .hobby-icon svg {
+      width: 100%;
+      height: 100%;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Τίτλοι: 0.95rem */
+    .hobby-card h3 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0.2px;
+      color: var(--text-color);
+      line-height: 1.25;
+    }
+
+    /* Mobile Adaptability */
+    @media (max-width: 580px) {
+      .hobbies-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.9rem;
+      }
+      
+      .hobby-card {
+        padding: 1.2rem 0.8rem;
+      }
+    }
+    /* ============================ </Hobbies CSS> =========================== */
+
+    /* ============================== <Blog CSS> ============================= */
+    /* Posts List */
+    .post-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    
+    .post-card {
+      background: var(--card-bg);
+      border: 1px solid var(--theme-border);
+      box-shadow: var(--card-shadow);
+      border-radius: 12px;
+      padding: 1.4rem;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .post-card:hover {
+      transform: translateY(-2px);
+      background: var(--hover-bg);
+    }
+
+    .post-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      letter-spacing: 0.03em;
+    }
+
+    .post-card h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--text-color);
+    }
+
+    .post-summary {
+      margin: 0;
+      font-size: 0.92rem;
+      color: var(--text-sub);
+      line-height: 1.5;
+    }
+
+    /* Archive Dropdown */
+    .archive-bar {
+      background: var(--card-bg);
+      border: 1px solid var(--theme-border);
+      box-shadow: var(--card-shadow);
+      border-radius: 12px;
+      padding: 0.9rem 1.2rem;
+      transition: background 0.3s ease;
+    }
+
+    .archive-bar summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: var(--text-color);
+      opacity: 0.9;
+      letter-spacing: 0.03em;
+      user-select: none;
+      list-style: none;
+    }
+
+    .archive-bar summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .archive-bar summary .summary-right {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .archive-bar summary svg {
+      fill: none;
+      stroke: var(--icon-color);
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .archive-content {
+      margin-top: 1rem;
+      padding-top: 0.8rem;
+      border-top: 1px solid var(--divider-color);
+    }
+
+    .archive-content ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.6rem;
+    }
+
+    .archive-content a {
+      color: var(--text-sub);
+      text-decoration: none;
+      font-size: 0.88rem;
+      transition: color 0.2s ease;
+    }
+
+    .archive-content a:hover {
+      color: var(--text-color);
+      text-decoration: underline;
+    }
+    /* ============================== </Blog CSS> ============================ */
+
+    /* ============================== <Post CSS> ============================= */
+    /* Κάρτα Άρθρου */
+    .article-card {
+      background: var(--card-bg);
+      border: 1px solid var(--theme-border);
+      box-shadow: var(--card-shadow);
+      border-radius: 12px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    .blog-post-meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      letter-spacing: 0.03em;
+    }
+
+    .article-card h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 500;
+      line-height: 1.3;
+      color: var(--text-color);
+    }
+
+    .post-content {
+      line-height: 1.7;
+      font-size: 1rem;
+      color: var(--text-sub);
+      border-top: 1px solid var(--divider-color);
+      padding-top: 1.2rem;
+      margin-top: 0.5rem;
+    }
+
+    .post-content p {
+      margin-top: 0;
+      margin-bottom: 1.2rem;
+    }
+
+    .post-content p:last-child {
+      margin-bottom: 0;
+    }
+
+    @media (max-width: 520px) {
+      body { padding: 2rem 1rem; }
+    }
+    /* ============================== </Post CSS> ============================ */
+
+    /* =================== <Projects & Hobbies Common CSS> =================== */
+    /* Intro Card */
+    .intro-card {
+      background: var(--card-bg);
+      box-shadow: var(--card-shadow);
+      border: 1px solid var(--theme-border);
+      border-radius: 12px;
+      padding: 1.4rem;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+    .intro-card h2 {
+      margin: 0 0 0.8rem 0;
+      font-size: 1.15rem;
+      font-weight: 500;
+      color: var(--text-color);
+      border-bottom: 1px solid var(--divider-color);
+      padding-bottom: 0.5rem;
+    }
+    .intro-card p {
+      margin: 0;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-sub);
+    }
+
+    /* Action Link Button */
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.5rem;
+      color: var(--text-color);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+    .action-btn:hover {
+      background: var(--hover-bg);
+    }
+    /* =================== </Projects & Hobbies Common CSS> ================== */
+
+    /* ============================= <Linux CSS> ============================= */
+    /* Timeline & List Formatting */
+    .timeline-item {
+      margin-bottom: 1.8rem;
+    }
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+    .timeline-date {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      display: block;
+    }
+    .timeline-title {
+      font-weight: 500;
+      color: var(--text-color);
+      margin: 0.0rem 0 0.3rem 0;
+    }
+
+    .timeline-bullets {
+      margin: 0.7rem 0 0 0;
+      padding-left: 1.2rem;
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: var(--text-sub);
+    }
+    .timeline-bullets li {
+      margin-bottom: 0.7rem;
+    }
+    .timeline-bullets li:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Terminal/Code Box */
+    .code-box {
+      background: var(--code-box-bg);
+      border: 1px solid var(--divider-color);
+      border-radius: 6px;
+      padding: 0.8rem 1rem;
+      font-family: monospace;
+      font-size: 0.85rem;
+      color: var(--code-box-text);
+      margin-top: 0.8rem;
+      overflow-x: auto;
+    }
+    /* ============================= </Linux CSS> ============================ */
+
+    /* ============================= <Music CSS> ============================= */
+    /* Combined Audio Player & HTML5 Playlist Card */
+    .player-card {
+      background: var(--card-bg);
+      border: 1px solid var(--player-card-border);
+      box-shadow: var(--card-shadow);
+      border-radius: 12px;
+      padding: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .player-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .track-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .track-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--title-color);
+    }
+
+    .track-artist {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .player-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .play-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--icon-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+      box-shadow: var(--card-shadow);
+    }
+
+    .play-btn:hover {
+      background: var(--hover-bg);
+      border-color: var(--play-btn-hover-border);
+    }
+
+    .play-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .progress-bar-container {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: var(--divider-color);
+      border-radius: 2px;
+      appearance: none;
+      -webkit-appearance: none;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .progress-bar::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--icon-color);
+      border: 2px solid #ffffff;
+      cursor: pointer;
+    }
+
+    .progress-bar::-moz-range-thumb {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--icon-color);
+      border: 2px solid #ffffff;
+      cursor: pointer;
+    }
+
+    .time-stamp {
+      font-size: 0.78rem;
+      font-family: monospace;
+      color: var(--text-muted);
+      min-width: 35px;
+    }
+
+    /* Separator HR */
+    .player-card hr {
+      border: none;
+      border-top: 1px solid var(--divider-color);
+      margin: 0.2rem 0;
+    }
+
+    /* Playlist Section inside Card */
+    .playlist-section-title {
+      font-size: 0.88rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .playlist-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .playlist-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.65rem 0.85rem;
+      background: var(--playlist-bg);
+      border-radius: 8px;
+      border: 1px solid var(--theme-border);
+      text-decoration: none;
+      color: var(--text-color);
+      transition: all 0.2s ease-in-out;
+      cursor: pointer;
+    }
+
+    .playlist-item:hover {
+      background: var(--hover-bg);
+      border-color: var(--playlist-hover-border);
+      transform: translateX(4px);
+    }
+
+    .playlist-item.active {
+      background: var(--hover-bg);
+      border-color: var(--playlist-active-border);
+      font-weight: 600;
+    }
+
+    .playlist-title {
+      font-size: 0.88rem;
+    }
+
+    .playlist-badge {
+      font-size: 0.75rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      color: var(--text-muted);
+      font-family: monospace;
+    }
+    /* ============================= </Music CSS> ============================ */
+
+    /* ========================== <Retro Logos CSS> ========================== */
+    /* Controls Bar: Search & Category Pills */
+    .controls-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .search-input {
+      width: 100%;
+      height: 38px;
+      padding: 0 0.9rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      color: var(--text-color);
+      font-size: 0.9rem;
+      outline: none;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.2s ease, background 0.3s ease;
+    }
+    .search-input:focus {
+      border-color: var(--card-border-hover);
+    }
+    .search-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .category-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .pill-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      color: var(--text-color);
+      padding: 0.4rem 0.75rem;
+      font-size: 0.82rem;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: all 0.2s ease;
+    }
+    .pill-btn:hover,
+    .pill-btn.active {
+      opacity: 1;
+      background: var(--hover-bg);
+      border-color: var(--card-border-hover);
+    }
+
+    /* Logo Gallery Grid */
+    .logo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 0.9rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .grid-item {
+      background: var(--card-bg);
+      box-shadow: var(--card-shadow);
+      border: 1px solid var(--grid-item-border);
+      border-radius: 12px;
+      padding: 1.2rem 0.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s ease, background-color 0.25s ease;
+      cursor: pointer;
+      height: 120px;
+      will-change: transform;
+      backface-visibility: hidden;
+      box-sizing: border-box; 
+    }
+
+    .grid-item:hover {
+      transform: translateY(-3px);
+      border-color: var(--card-border-hover);
+      background: var(--hover-bg);
+    }
+
+    .grid-item img {
+      width: 100%;
+      height: 55px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .item-label {
+      font-size: 0.8rem;
+      opacity: 0.8;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+      color: var(--text-sub);
+    }
+
+    span.item-label { display: none; }
+
+    /* Disclaimer Footer */
+    .disclaimer-card {
+      background: var(--card-bg);
+      border: 1px solid var(--grid-item-border);
+      border-radius: 8px;
+      padding: 0.8rem 1rem;
+      font-size: 0.78rem;
+      line-height: 1.5;
+      color: var(--text-muted);
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Modal Overlay */
+    .logos-image-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: var(--logos-modal-overlay);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      pointer-events: auto;
+      cursor: zoom-out;
+      transition: background-color 0.3s ease;
+    }
+
+    .logos-image-modal.active {
+      display: flex;
+    }
+
+    /* Περιέχον Modal Content - Σταθερό μέγεθος */
+    .logos-modal-content {
+      position: relative;
+      width: 550px;
+      height: 320px;
+      max-width: 90vw;
+      max-height: 70vh;
+      padding: 2.5rem 2rem 2rem 2rem;
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border-hover);
+      border-radius: 16px;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: default;
+      overflow: hidden;
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Κουμπί κλεισίματος (X) */
+    .logos-modal-close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 28px;
+      height: 28px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      color: var(--logos-close-btn-color);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 10;
+    }
+
+    .logos-modal-close-btn:hover {
+      opacity: 1;
+      background: var(--hover-bg);
+      border-color: var(--card-border-hover);
+    }
+
+    .logos-modal-close-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      display: block;
+    }
+
+    /* SVG Holder & Responsive SVG Scaling */
+    #modalSvgHolder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    #modalSvgHolder svg,
+    .logos-modal-content img {
+      width: 78% !important;
+      height: 78% !important;
+      max-width: 78% !important;
+      max-height: 78% !important;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+    }
+    /* ========================== </Retro Logos CSS> ========================= */
